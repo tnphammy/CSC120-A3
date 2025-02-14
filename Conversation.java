@@ -6,32 +6,38 @@ import java.util.Random;
 class Conversation implements Chatbot {
 
   // Attributes 
+  private ArrayList<String> transcript;
 
   /**
    * Constructor 
    */
   Conversation() {
+    transcript = new ArrayList<String>();
     
   }
 
   /**
    * Starts and runs the conversation with the user
-   */
+   */ 
   public void chat() {
     System.out.println("How many rounds would you like to talk to me for?");
     Scanner input = new Scanner(System.in);
     int rounds = input.nextInt(); // Establish the number of rounds
 
-    System.out.println("Hi there! Whatcha thinkin' about?");
-    input.nextLine(); // Swallow the next line first
+    System.out.println("""
 
+        Hi there! Whatcha thinkin' about?""");
+    String x  = input.nextLine(); // Swallow the next line first
+    transcript.add(x); // Add the first input
 
     // Call respond() method:
     for (int i = 0; i < rounds; i++) { 
       String text = input.nextLine(); 
+      transcript.add(text);
       String response = respond(text);
+      transcript.add(response);
       System.out.println(response);
-
+    
     } 
     input.close();
 
@@ -39,13 +45,17 @@ class Conversation implements Chatbot {
     System.out.println("Okay. Bye!");
   }
 
-  
-  
-
   /**
    * Prints transcript of conversation
    */
   public void printTranscript() {
+    System.out.println("""
+        
+    TRANSCRIPT: """);
+
+    for(int i = 0; i < transcript.size(); i ++) {
+      System.out.println(transcript.get(i));
+    }
 
   }
 
@@ -124,6 +134,7 @@ class Conversation implements Chatbot {
 
     return String.join(" ", words) + "?";
   }
+    
 
   public static void main(String[] arguments) {
 
