@@ -6,8 +6,8 @@ import java.util.Random;
 class Conversation implements Chatbot {
 
   // Attributes 
-  private ArrayList<String> transcript;
-
+  private ArrayList<String> transcript; // Makes a list of all the user's inputs and the machine response.
+ 
   /**
    * Constructor 
    */
@@ -23,17 +23,14 @@ class Conversation implements Chatbot {
     System.out.println("How many rounds would you like to talk to me for?");
     Scanner input = new Scanner(System.in);
     int rounds = input.nextInt(); // Establish the number of rounds
-
-    System.out.println("""
-
-        Hi there! Whatcha thinkin' about?""");
-    String x  = input.nextLine(); // Swallow the next line first
-    transcript.add(x); // Add the first input
-
+  
+    System.out.println("\nHi there! Whatcha thinkin' about?");
+    input.nextLine(); // Swallow the next line first
+    
     // Call respond() method:
     for (int i = 0; i < rounds; i++) { 
       String text = input.nextLine(); 
-      transcript.add(text);
+      transcript.add(text); // Adds user's input to our transcript
       String response = respond(text);
       transcript.add(response);
       System.out.println(response);
@@ -49,13 +46,13 @@ class Conversation implements Chatbot {
    * Prints transcript of conversation
    */
   public void printTranscript() {
-    System.out.println("""
-        
-    TRANSCRIPT: """);
+    System.out.println("\nTRANSCRIPT:");
+    System.out.println("\nHi there! Whatcha thinkin' about?"); 
 
-    for(int i = 0; i < transcript.size(); i ++) {
+    for(int i = 0; i < transcript.size(); i ++) { 
       System.out.println(transcript.get(i));
     }
+    System.out.println("Okay. Bye!");
 
   }
 
@@ -83,6 +80,8 @@ class Conversation implements Chatbot {
     pronouns.add("you");
     pronouns.add("are");
     pronouns.add("your");
+    pronouns.add("i'm");
+    pronouns.add("you're");
 
     // Locate pronouns from the user's input
     String[] arrStrings = inputString.split(" "); // Split the sentence into word units
@@ -94,12 +93,8 @@ class Conversation implements Chatbot {
     
     // If no pronouns detected, give random canned response
     Random random = new Random();
-    int cannedResponsesCount = cannedResponses.size();
-    int responseNumber = random.nextInt(cannedResponsesCount); // Choose a random index
-    String returnString = cannedResponses.get(responseNumber); // Respond correspondingly with the chosen index
-    return returnString;
-    
-
+    int responseNumber = random.nextInt(cannedResponses.length); // Choose a random index
+    return cannedResponses[responseNumber]; // Respond correspondingly with the chosen index
     
   }
 
@@ -109,9 +104,15 @@ class Conversation implements Chatbot {
    * @return the mirrored response
    */
   public static String mirror(String words[]) {
-    for (int i = 0; i < words.length; i ++) {
+    for (int i = 0; i < words.length; i++) {
       switch (words[i].toLowerCase()) {
         case "i":
+          words[i] = "you";
+          break;
+        case "i'm":
+          words[i] = "you're";
+          break;
+        case "me":
           words[i] = "you";
           break;
         case "am":
@@ -121,10 +122,18 @@ class Conversation implements Chatbot {
           words[i] = "your";
           break;
         case "you":
-          words[i] = "me";
+          if (i == 0) {
+            words[i] = "I"; // (not completely foolproof) Way to ensure "You" -> "I" (as a subject) – aka when it's the first word of the sentence.
+          }
+          else {
+            words[i] = "me";
+          }
           break;
         case "are":
           words[i] = "am";
+          break;
+        case "you're":
+          words[i] = "i'm";
           break;
         case "your":
           words[i] = "my";
