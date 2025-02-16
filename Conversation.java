@@ -6,13 +6,26 @@ import java.util.Random;
 class Conversation implements Chatbot {
 
   // Attributes 
-  private ArrayList<String> transcript; // Makes a list of all the user's inputs and the machine response.
+
+    // A dynamic list of all the user's inputs and the machine response.
+  private ArrayList<String> transcript;
+
+    // Makes a static array of canned responses.
+  String[] cannedResponses = {
+    "Mhm-hmm",
+    "Uh-hum",
+    "Tell em more...", 
+    "Okay.",
+    "Really?",
+    "Yeah?",
+    "Interesting"
+  }; 
  
   /**
    * Constructor 
    */
   Conversation() {
-    transcript = new ArrayList<String>();
+    transcript = new ArrayList<String>(); // Make a new instance of the transcript
     
   }
 
@@ -26,13 +39,13 @@ class Conversation implements Chatbot {
   
     System.out.println("\nHi there! Whatcha thinkin' about?");
     input.nextLine(); // Swallow the next line first
-    
+
     // Call respond() method:
     for (int i = 0; i < rounds; i++) { 
       String text = input.nextLine(); 
       transcript.add(text); // Adds user's input to our transcript
       String response = respond(text);
-      transcript.add(response);
+      transcript.add(response); // Adds machine response to our transcript
       System.out.println(response);
     
     } 
@@ -46,10 +59,10 @@ class Conversation implements Chatbot {
    * Prints transcript of conversation
    */
   public void printTranscript() {
-    System.out.println("\nTRANSCRIPT:");
+    System.out.println("\nTRANSCRIPT: ");
     System.out.println("\nHi there! Whatcha thinkin' about?"); 
 
-    for(int i = 0; i < transcript.size(); i ++) { 
+    for(int i = 0; i < transcript.size(); i++) { 
       System.out.println(transcript.get(i));
     }
     System.out.println("Okay. Bye!");
@@ -62,18 +75,10 @@ class Conversation implements Chatbot {
    * @return mirrored or canned response to user input  
    */
   public String respond(String inputString) {
-    
-    // Create a list of canned responses.
-    ArrayList<String> cannedResponses = new ArrayList<String>();
-    cannedResponses.add("Mhm-hmm.");
-    cannedResponses.add("Okay.");
-    cannedResponses.add("Really?");
-    cannedResponses.add("Uh-huh.");
-    cannedResponses.add("Tell me more...");
 
     // Create a list of pronouns.
     ArrayList<String> pronouns = new ArrayList<String>();
-    pronouns.add("I");
+    pronouns.add("i");
     pronouns.add("am");
     pronouns.add("me");
     pronouns.add("my");
